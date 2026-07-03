@@ -46,12 +46,6 @@
     .wrap { max-width: var(--maxw); margin: 0 auto; padding: 0 20px; }
     a { color: inherit; text-decoration: none; }
 
-    /* ===================== TICKER TAPE (thanh chỉ số) ===================== */
-    .ticker-bar {
-      background: var(--navy);
-      border-bottom: 3px solid var(--primary);
-    }
-
     /* ===================== MASTHEAD / HEADER ===================== */
     .site-header {
       background: var(--surface);
@@ -220,31 +214,6 @@
 </head>
 
 <body>
-  <!-- ===================== THANH CHỈ SỐ (TICKER) ===================== -->
-  <div class="ticker-bar">
-    <div class="tradingview-widget-container">
-      <div class="tradingview-widget-container__widget"></div>
-      <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-ticker-tape.js" async>
-      {
-        "symbols": [
-          { "proName": "TVC:NI225",        "title": "日経225" },
-          { "proName": "TSE:TOPIX",        "title": "TOPIX" },
-          { "proName": "FX_IDC:USDJPY",    "title": "USD/JPY" },
-          { "proName": "TVC:DJI",          "title": "NYダウ" },
-          { "proName": "SP:SPX",           "title": "S&P500" },
-          { "proName": "TVC:GOLD",         "title": "金 (Gold)" },
-          { "proName": "TVC:US10Y",        "title": "米10年債" }
-        ],
-        "showSymbolLogo": true,
-        "colorTheme": "dark",
-        "isTransparent": true,
-        "displayMode": "adaptive",
-        "locale": "ja"
-      }
-      </script>
-    </div>
-  </div>
-
   <!-- ===================== MASTHEAD ===================== -->
   <header class="site-header">
     <div class="wrap masthead">
