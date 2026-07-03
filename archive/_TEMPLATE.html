@@ -1,0 +1,42 @@
+<!-- =========================================================================
+     MẪU FILE TIN THÔ HẰNG NGÀY  (archive/yyyy-mm-dd.html)
+     - CHỈ chứa nội dung thô: KHÔNG có <html>, <head>, <body>.
+     - Toàn bộ CSS đã được index.html cấp sẵn (class .article-meta, .tag, table...).
+     - AI copy khung này, đổi ngày + nội dung, lưu thành archive/<YYYY-MM-DD>.html
+     ========================================================================= -->
+
+<!-- 1) TIÊU ĐỀ BẢN TIN (bắt buộc dùng h2 làm tiêu đề tổng của ngày) -->
+<h2>Bản tin nổi bật ngày DD/MM/YYYY</h2>
+
+<!-- 2) HÀNG META: tag phân loại + thời gian cào tin -->
+<div class="article-meta">
+  <span class="tag">Chủ đề A</span>
+  <span class="tag">Chủ đề B</span>
+  <span class="crawl-time">⏱️ Cào lúc HH:MM, DD/MM/YYYY</span>
+</div>
+
+<!-- 3) THÂN BÀI: mỗi tin = 1 cụm (h3 tiêu đề + các đoạn p tóm tắt) -->
+<h3>Tiêu đề tin số 1</h3>
+<p>Đoạn tóm tắt 1 — nội dung chính, ngắn gọn, khách quan.</p>
+<p>Đoạn tóm tắt 2 — bổ sung số liệu/bối cảnh nếu có.</p>
+<p>Nguồn: <a href="https://vi-du-nguon-tin.vn/bai-viet" target="_blank" rel="noopener">Tên báo</a></p>
+
+<h3>Tiêu đề tin số 2</h3>
+<p>Đoạn tóm tắt cho tin thứ hai.</p>
+
+<!-- 4) (TÙY CHỌN) ĐIỂM TIN NHANH dạng danh sách -->
+<h3>Điểm tin nhanh trong ngày</h3>
+<ul>
+  <li>Ý tin nhanh 1.</li>
+  <li>Ý tin nhanh 2.</li>
+</ul>
+
+<!-- 5) (TÙY CHỌN) BẢNG SỐ LIỆU nội bộ -->
+<table>
+  <thead>
+    <tr><th>Chỉ số</th><th>Giá trị</th><th>Thay đổi</th></tr>
+  </thead>
+  <tbody>
+    <tr><td>Ví dụ 1</td><td>0,00</td><td>+0,00%</td></tr>
+  </tbody>
+</table>
