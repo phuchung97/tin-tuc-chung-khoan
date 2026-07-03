@@ -15,7 +15,13 @@ Bạn là bộ máy tự động của dự án tại thư mục `D:\CLAUDE\tin-
 
 ## BƯỚC 2 — TẠO FILE LƯU TRỮ MỚI
 - Đọc mẫu tại `archive/_TEMPLATE.html`.
-- Tạo file mới `archive/<TODAY>.html` theo đúng cấu trúc template: `<h2>` tiêu đề ngày, khối `.article-meta` (tag + thời gian cào thực tế), rồi nội dung dạng `<h3>` + các đoạn `<p>` / bảng `<table>`.
+- Tạo file mới `archive/<TODAY>.html` theo đúng cấu trúc template: `<h2>` tiêu đề ngày, khối `.article-meta` (tag + thời gian cập nhật thực tế), rồi nội dung dạng `<h3>` + các đoạn `<p>` / bảng `<table>`.
+- **Biểu đồ cho phần "Cổ phiếu có giá trị giao dịch đột biến (Nikkei)":** chọn 3–4 mã biến động mạnh nhất, sinh biểu đồ bằng công cụ (KHÔNG viết SVG tay):
+  ```
+  python tools/gen_spark.py <file_tam>.html "<mã>:<tên_JP>:<%thay_đổi>:<up|down>" ...
+  ```
+  Ví dụ: `python tools/gen_spark.py chart.html "4812:電通総研:+14,71%:up" "9793:ダイセキ:-6,45%:down"`.
+  Sau đó dán khối `<div class="spark-grid">…</div>` sinh ra vào ngay dưới phần 2 (dưới câu "📊 Biểu đồ các mã biến động mạnh"). Công cụ tự lấy giá 1 tháng từ Yahoo Finance và kèm link TradingView cho từng mã.
 - **Chỉ chứa nội dung thô**, không thêm `<html>/<head>/<body>`. Nếu file ngày `<TODAY>` đã tồn tại thì **ghi đè**.
 
 ## BƯỚC 3 — CẬP NHẬT DATABASE.JSON

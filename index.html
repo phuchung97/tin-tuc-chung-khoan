@@ -10,6 +10,9 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700&family=Noto+Sans+JP:wght@400;500;700&family=Noto+Serif+JP:wght@600;700&display=swap" rel="stylesheet" />
 
+  <!-- Khởi tạo theme sớm để tránh nháy màn hình -->
+  <script>(function(){try{if(localStorage.getItem("tt-theme")==="dark")document.documentElement.setAttribute("data-theme","dark");}catch(e){}})();</script>
+
   <style>
     /* ===================== THEME (tài chính Nhật, light) ===================== */
     :root {
@@ -33,8 +36,35 @@
       --jp:            'Noto Sans JP', 'Be Vietnam Pro', sans-serif;
     }
 
+    /* ===================== DARK MODE (bật thủ công) ===================== */
+    :root[data-theme="dark"] {
+      --bg:            #0e1420;
+      --surface:       #161d2b;
+      --surface-2:     #1e2738;
+      --text:          #e7ebf2;
+      --text-soft:     #aab3c3;
+      --text-faint:    #7c8698;
+      --primary:       #ff6168;
+      --primary-soft:  #3a2024;
+      --navy:          #0d2440;
+      --border:        #2a3348;
+      --shadow:        0 1px 2px rgba(0,0,0,.4), 0 6px 20px rgba(0,0,0,.35);
+    }
+    /* Các tiêu đề dùng màu navy → chuyển sang màu chữ sáng khi tối */
+    :root[data-theme="dark"] .brand h1,
+    :root[data-theme="dark"] .masthead .today b,
+    :root[data-theme="dark"] .section-head h2,
+    :root[data-theme="dark"] .article-body h2,
+    :root[data-theme="dark"] #today-news h2,
+    :root[data-theme="dark"] .article-body h3,
+    :root[data-theme="dark"] .spark-cap b { color: var(--text); }
+    :root[data-theme="dark"] .section-head { border-bottom-color: var(--border); }
+    :root[data-theme="dark"] .article-body th,
+    :root[data-theme="dark"] .tag { background: #1b3a5c; }
+
     * { box-sizing: border-box; margin: 0; padding: 0; }
     html { scroll-behavior: smooth; }
+    body { transition: background-color .2s ease, color .2s ease; }
     body {
       font-family: var(--sans);
       background: var(--bg);
@@ -74,6 +104,15 @@
       font-size: 12.5px; color: var(--text-faint);
       letter-spacing: 2.5px; text-transform: uppercase; margin-top: 3px;
     }
+    .mast-right { display: flex; align-items: center; gap: 14px; }
+    .theme-toggle {
+      width: 40px; height: 40px; flex: none; border-radius: 8px;
+      border: 1px solid var(--border); background: var(--surface-2);
+      color: var(--text); font-size: 18px; cursor: pointer;
+      display: grid; place-items: center; transition: border-color .15s ease, transform .15s ease;
+    }
+    .theme-toggle:hover { border-color: var(--primary); transform: translateY(-1px); }
+    .theme-toggle:active { transform: translateY(0); }
     .masthead .today {
       text-align: right; font-size: 13px; color: var(--text-soft);
       border-left: 3px solid var(--primary); padding-left: 12px;
@@ -125,6 +164,29 @@
     .widget-card .tradingview-widget-container__widget { height: 100%; }
     @media (max-width: 900px) { #market-widgets { grid-template-columns: repeat(2, 1fr); } }
     @media (max-width: 480px) { #market-widgets { grid-template-columns: 1fr; } }
+
+    /* ===================== BIỂU ĐỒ CỔ PHIẾU (SVG sparkline nhúng) ===================== */
+    .spark-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin: 12px 0 22px; }
+    .spark-card { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; overflow: hidden; box-shadow: var(--shadow); }
+    .spark-cap {
+      display: flex; align-items: baseline; justify-content: space-between; gap: 8px;
+      padding: 8px 10px; border-bottom: 1px solid var(--border); background: var(--surface-2);
+      font-family: var(--jp); font-size: 13px;
+    }
+    .spark-cap b { color: var(--navy); font-weight: 700; }
+    .spark { display: block; width: 100%; height: 78px; }
+    .spark-foot {
+      display: flex; align-items: center; justify-content: space-between; gap: 8px;
+      padding: 6px 10px; font-size: 12px; color: var(--text-faint);
+      font-variant-numeric: tabular-nums; border-top: 1px solid var(--border);
+    }
+    .spark-foot .tv-link { color: var(--primary); font-weight: 600; font-size: 11.5px; white-space: nowrap; text-decoration: none; }
+    .spark-foot .tv-link:hover { text-decoration: underline; }
+    .spark-err { padding: 24px 10px; font-size: 12px; color: var(--text-faint); text-align: center; }
+    .up { color: var(--up); font-weight: 700; font-variant-numeric: tabular-nums; }
+    .down { color: var(--down); font-weight: 700; font-variant-numeric: tabular-nums; }
+    @media (max-width: 900px) { .spark-grid { grid-template-columns: repeat(2, 1fr); } }
+    @media (max-width: 480px) { .spark-grid { grid-template-columns: 1fr; } }
 
     /* ===================== TIN HÔM NAY ===================== */
     #today-news {
@@ -224,9 +286,12 @@
           <div class="sub">Chứng khoán Nhật Bản · 日本株マーケット</div>
         </div>
       </div>
-      <div class="today">
-        Phiên giao dịch
-        <b id="today-headline">—</b>
+      <div class="mast-right">
+        <button id="theme-toggle" class="theme-toggle" type="button" aria-label="Chuyển chế độ sáng / tối" title="Chế độ sáng / tối"><span class="ti">🌙</span></button>
+        <div class="today">
+          Phiên giao dịch
+          <b id="today-headline">—</b>
+        </div>
       </div>
     </div>
     <div class="header-strip">
@@ -246,42 +311,10 @@
     </div>
 
     <div id="market-widgets">
-      <!-- 日経225 (Nikkei 225, feed OANDA free) -->
-      <div class="widget-card">
-        <div class="tradingview-widget-container">
-          <div class="tradingview-widget-container__widget"></div>
-          <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-mini-symbol-overview.js" async>
-          { "symbol": "OANDA:JP225USD", "width": "100%", "height": "100%", "locale": "ja", "dateRange": "1D", "colorTheme": "light", "isTransparent": true, "autosize": true }
-          </script>
-        </div>
-      </div>
-      <!-- S&P500 -->
-      <div class="widget-card">
-        <div class="tradingview-widget-container">
-          <div class="tradingview-widget-container__widget"></div>
-          <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-mini-symbol-overview.js" async>
-          { "symbol": "OANDA:SPX500USD", "width": "100%", "height": "100%", "locale": "ja", "dateRange": "1D", "colorTheme": "light", "isTransparent": true, "autosize": true }
-          </script>
-        </div>
-      </div>
-      <!-- USD/JPY -->
-      <div class="widget-card">
-        <div class="tradingview-widget-container">
-          <div class="tradingview-widget-container__widget"></div>
-          <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-mini-symbol-overview.js" async>
-          { "symbol": "OANDA:USDJPY", "width": "100%", "height": "100%", "locale": "ja", "dateRange": "1D", "colorTheme": "light", "isTransparent": true, "autosize": true }
-          </script>
-        </div>
-      </div>
-      <!-- NYダウ (Dow Jones, feed OANDA free) -->
-      <div class="widget-card">
-        <div class="tradingview-widget-container">
-          <div class="tradingview-widget-container__widget"></div>
-          <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-mini-symbol-overview.js" async>
-          { "symbol": "OANDA:US30USD", "width": "100%", "height": "100%", "locale": "ja", "dateRange": "1D", "colorTheme": "light", "isTransparent": true, "autosize": true }
-          </script>
-        </div>
-      </div>
+      <div class="widget-card" data-symbol="OANDA:JP225USD"></div>   <!-- 日経225 -->
+      <div class="widget-card" data-symbol="OANDA:SPX500USD"></div>  <!-- S&P500 -->
+      <div class="widget-card" data-symbol="OANDA:USDJPY"></div>     <!-- USD/JPY -->
+      <div class="widget-card" data-symbol="OANDA:US30USD"></div>    <!-- NYダウ -->
     </div>
 
     <!-- ===================== TIN HÔM NAY ===================== -->
@@ -331,6 +364,62 @@
       "use strict";
 
       document.getElementById("year").textContent = new Date().getFullYear();
+
+      /* ===================== DARK MODE + WIDGET CHỈ SỐ ===================== */
+      var THEME_KEY = "tt-theme";
+
+      function currentTheme() {
+        return document.documentElement.getAttribute("data-theme") === "dark" ? "dark" : "light";
+      }
+
+      // Tạo 1 widget mini TradingView vào 1 thẻ, theo theme hiện tại
+      function buildMarketWidget(host, symbol, theme) {
+        host.innerHTML = "";
+        var container = document.createElement("div");
+        container.className = "tradingview-widget-container";
+        container.style.height = "100%";
+        var widget = document.createElement("div");
+        widget.className = "tradingview-widget-container__widget";
+        widget.style.height = "100%";
+        container.appendChild(widget);
+        var s = document.createElement("script");
+        s.async = true;
+        s.src = "https://s3.tradingview.com/external-embedding/embed-widget-mini-symbol-overview.js";
+        s.text = JSON.stringify({
+          symbol: symbol, width: "100%", height: "100%", locale: "ja",
+          dateRange: "1D", colorTheme: theme, isTransparent: true, autosize: true
+        });
+        container.appendChild(s);
+        host.appendChild(container);
+      }
+
+      function renderMarketWidgets(theme) {
+        var cards = document.querySelectorAll("#market-widgets .widget-card[data-symbol]");
+        Array.prototype.forEach.call(cards, function (c) {
+          buildMarketWidget(c, c.getAttribute("data-symbol"), theme);
+        });
+      }
+
+      function applyTheme(theme, rerenderWidgets) {
+        document.documentElement.setAttribute("data-theme", theme);
+        var btn = document.getElementById("theme-toggle");
+        if (btn) btn.querySelector(".ti").textContent = (theme === "dark" ? "☀️" : "🌙");
+        try { localStorage.setItem(THEME_KEY, theme); } catch (e) {}
+        if (rerenderWidgets) renderMarketWidgets(theme);
+      }
+
+      // Khởi tạo: icon nút theo theme sẵn có, render widget lần đầu, gắn sự kiện
+      (function initTheme() {
+        var t = currentTheme();
+        var btn = document.getElementById("theme-toggle");
+        if (btn) {
+          btn.querySelector(".ti").textContent = (t === "dark" ? "☀️" : "🌙");
+          btn.addEventListener("click", function () {
+            applyTheme(currentTheme() === "dark" ? "light" : "dark", true);
+          });
+        }
+        renderMarketWidgets(t);
+      })();
 
       function toDisplayDate(iso) {
         var p = String(iso).split("-");
