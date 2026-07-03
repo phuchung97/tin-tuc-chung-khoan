@@ -3,282 +3,333 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="Trang tổng hợp tin tức tự động, cập nhật mỗi ngày bằng hệ thống AI." />
-  <title>Trang Cập Nhật Tin Tức Mỗi Ngày</title>
+  <meta name="description" content="Bản tin thị trường chứng khoán Nhật Bản — cập nhật mỗi ngày: biến động ngành, dòng tiền và các mã đáng chú ý." />
+  <title>Bản Tin Thị Trường — Chứng Khoán Nhật Bản</title>
 
-  <!-- Font dễ đọc, hiện đại -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700&family=Merriweather:wght@400;700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700&family=Noto+Sans+JP:wght@400;500;700&family=Noto+Serif+JP:wght@600;700&display=swap" rel="stylesheet" />
 
   <style>
-    /* ===================== BIẾN MÀU & THEME ===================== */
+    /* ===================== THEME (tài chính Nhật, light) ===================== */
     :root {
-      --bg:            #f4f5f7;
+      --bg:            #eef0f3;
       --surface:       #ffffff;
-      --surface-2:     #fbfbfd;
-      --text:          #1f2430;
-      --text-soft:     #5b6472;
-      --text-faint:    #8a93a2;
-      --primary:       #c0392b;   /* đỏ báo chí trang nhã */
-      --primary-soft:  #fdecea;
-      --border:        #e6e8ec;
-      --shadow:        0 1px 3px rgba(20, 24, 40, .06), 0 8px 24px rgba(20, 24, 40, .06);
-      --radius:        16px;
-      --maxw:          1160px;
-      --serif:         'Merriweather', Georgia, 'Times New Roman', serif;
-      --sans:          'Be Vietnam Pro', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+      --surface-2:     #f7f8fa;
+      --text:          #16202c;
+      --text-soft:     #4a5568;
+      --text-faint:    #868f9d;
+      --primary:       #b11f24;   /* đỏ tài chính (Nikkei-red) */
+      --primary-soft:  #fbe9ea;
+      --navy:          #0b2a4a;    /* xanh navy chuyên nghiệp */
+      --up:            #17914e;    /* xanh tăng */
+      --down:          #c0392b;    /* đỏ giảm */
+      --border:        #dfe3e8;
+      --shadow:        0 1px 2px rgba(11,42,74,.05), 0 6px 20px rgba(11,42,74,.06);
+      --radius:        10px;
+      --maxw:          1180px;
+      --sans:          'Be Vietnam Pro', 'Noto Sans JP', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+      --serif:         'Noto Serif JP', 'Times New Roman', serif;
+      --jp:            'Noto Sans JP', 'Be Vietnam Pro', sans-serif;
     }
 
-    @media (prefers-color-scheme: dark) {
-      :root {
-        --bg:          #14161c;
-        --surface:     #1c1f28;
-        --surface-2:   #21252f;
-        --text:        #e9ebf0;
-        --text-soft:   #b0b7c3;
-        --text-faint:  #7d8492;
-        --primary:     #ff6b5b;
-        --primary-soft:#3a2320;
-        --border:      #2b2f3a;
-        --shadow:      0 1px 3px rgba(0,0,0,.4), 0 8px 24px rgba(0,0,0,.35);
-      }
-    }
-
-    /* ===================== RESET & BASE ===================== */
     * { box-sizing: border-box; margin: 0; padding: 0; }
-
     html { scroll-behavior: smooth; }
-
     body {
       font-family: var(--sans);
       background: var(--bg);
       color: var(--text);
-      line-height: 1.65;
+      line-height: 1.7;
       -webkit-font-smoothing: antialiased;
       text-rendering: optimizeLegibility;
     }
-
     .wrap { max-width: var(--maxw); margin: 0 auto; padding: 0 20px; }
-
     a { color: inherit; text-decoration: none; }
 
-    /* ===================== HEADER ===================== */
+    /* ===================== TICKER TAPE (thanh chỉ số) ===================== */
+    .ticker-bar {
+      background: var(--navy);
+      border-bottom: 3px solid var(--primary);
+    }
+
+    /* ===================== MASTHEAD / HEADER ===================== */
     .site-header {
-      background: linear-gradient(180deg, var(--surface) 0%, var(--surface-2) 100%);
-      border-bottom: 1px solid var(--border);
-      padding: 40px 0 34px;
-      text-align: center;
-    }
-    .badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      background: var(--primary-soft);
-      color: var(--primary);
-      font-size: 13px;
-      font-weight: 600;
-      padding: 6px 14px;
-      border-radius: 999px;
-      margin-bottom: 16px;
-      letter-spacing: .3px;
-    }
-    .badge .dot {
-      width: 8px; height: 8px; border-radius: 50%;
-      background: var(--primary);
-      animation: pulse 1.8s infinite;
-    }
-    @keyframes pulse {
-      0%   { box-shadow: 0 0 0 0 rgba(192,57,43,.5); }
-      70%  { box-shadow: 0 0 0 8px rgba(192,57,43,0); }
-      100% { box-shadow: 0 0 0 0 rgba(192,57,43,0); }
-    }
-    .site-header h1 {
-      font-family: var(--serif);
-      font-size: clamp(26px, 5vw, 42px);
-      font-weight: 700;
-      letter-spacing: -.5px;
-      line-height: 1.2;
-    }
-    .site-header p {
-      color: var(--text-soft);
-      max-width: 620px;
-      margin: 12px auto 0;
-      font-size: clamp(14px, 2.5vw, 16px);
-    }
-
-    /* ===================== SECTION TITLE ===================== */
-    .section-title {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      margin: 40px 0 20px;
-    }
-    .section-title h2 {
-      font-family: var(--serif);
-      font-size: clamp(20px, 3.5vw, 26px);
-      font-weight: 700;
-      white-space: nowrap;
-    }
-    .section-title .line { flex: 1; height: 1px; background: var(--border); }
-    .section-title .meta { font-size: 13px; color: var(--text-faint); white-space: nowrap; }
-
-    /* ===================== TODAY NEWS ===================== */
-    #today-news {
       background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
+      border-bottom: 1px solid var(--border);
+    }
+    .masthead {
+      display: flex; align-items: center; justify-content: space-between;
+      gap: 16px; flex-wrap: wrap;
+      padding: 22px 0 18px;
+    }
+    .brand { display: flex; align-items: center; gap: 14px; }
+    .brand .mark {
+      width: 46px; height: 46px; border-radius: 8px; flex: none;
+      background: var(--primary); color: #fff;
+      display: grid; place-items: center;
+      font-family: var(--serif); font-weight: 700; font-size: 24px;
       box-shadow: var(--shadow);
+    }
+    .brand h1 {
+      font-family: var(--serif);
+      font-size: clamp(22px, 3.6vw, 32px);
+      font-weight: 700; letter-spacing: .5px; line-height: 1.15;
+      color: var(--navy);
+    }
+    .brand .sub {
+      font-size: 12.5px; color: var(--text-faint);
+      letter-spacing: 2.5px; text-transform: uppercase; margin-top: 3px;
+    }
+    .masthead .today {
+      text-align: right; font-size: 13px; color: var(--text-soft);
+      border-left: 3px solid var(--primary); padding-left: 12px;
+    }
+    .masthead .today b { display: block; color: var(--navy); font-size: 15px; font-weight: 700; }
+    .header-strip {
+      background: var(--surface-2);
+      border-top: 1px solid var(--border);
+      font-size: 13.5px; color: var(--text-soft);
+    }
+    .header-strip .wrap { padding: 9px 20px; display: flex; align-items: center; gap: 10px; }
+    .header-strip .live {
+      display: inline-flex; align-items: center; gap: 7px;
+      color: var(--primary); font-weight: 600; font-size: 12.5px;
+      letter-spacing: .5px; white-space: nowrap;
+    }
+    .header-strip .live .dot { width: 7px; height: 7px; border-radius: 50%; background: var(--primary); animation: pulse 1.8s infinite; }
+    @keyframes pulse { 0%{box-shadow:0 0 0 0 rgba(177,31,36,.5);} 70%{box-shadow:0 0 0 7px rgba(177,31,36,0);} 100%{box-shadow:0 0 0 0 rgba(177,31,36,0);} }
+
+    /* ===================== SECTION HEADER (kiểu báo tài chính) ===================== */
+    .section-head {
+      display: flex; align-items: baseline; gap: 12px;
+      margin: 34px 0 16px; padding-bottom: 10px;
+      border-bottom: 2px solid var(--navy);
+    }
+    .section-head h2 {
+      font-family: var(--serif); font-weight: 700;
+      font-size: clamp(18px, 3vw, 23px); color: var(--navy);
+      position: relative; padding-left: 14px;
+    }
+    .section-head h2::before {
+      content: ""; position: absolute; left: 0; top: 4px; bottom: 4px;
+      width: 5px; background: var(--primary); border-radius: 2px;
+    }
+    .section-head .jp { font-family: var(--jp); font-size: 13px; color: var(--text-faint); font-weight: 500; }
+    .section-head .meta { margin-left: auto; font-size: 13px; color: var(--text-faint); white-space: nowrap; }
+
+    /* ===================== WIDGET GRID (chỉ số thị trường) ===================== */
+    #market-widgets {
+      display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px;
+      margin-bottom: 8px;
+    }
+    .widget-card {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: var(--radius); box-shadow: var(--shadow);
+      overflow: hidden; height: 168px;
+    }
+    .widget-card .tradingview-widget-container,
+    .widget-card .tradingview-widget-container__widget { height: 100%; }
+    @media (max-width: 900px) { #market-widgets { grid-template-columns: repeat(2, 1fr); } }
+    @media (max-width: 480px) { #market-widgets { grid-template-columns: 1fr; } }
+
+    /* ===================== TIN HÔM NAY ===================== */
+    #today-news {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: var(--radius); box-shadow: var(--shadow);
       padding: clamp(22px, 4vw, 40px);
     }
-
-    /* Kiểu chữ cho nội dung được nạp từ file archive/*.html */
-    .article-body h2,
-    #today-news h2 {
-      font-family: var(--serif);
-      font-size: clamp(20px, 3.5vw, 28px);
-      line-height: 1.3;
-      margin: 0 0 6px;
+    .article-body h2, #today-news h2 {
+      font-family: var(--serif); font-size: clamp(20px, 3.4vw, 27px);
+      line-height: 1.35; margin: 0 0 6px; color: var(--navy);
     }
-    .article-body h3 { font-size: 19px; margin: 26px 0 10px; }
+    .article-body h3 { font-size: 19px; margin: 26px 0 10px; color: var(--navy); font-weight: 700; }
     .article-body p  { margin: 0 0 14px; color: var(--text-soft); }
     .article-body a  { color: var(--primary); text-decoration: underline; text-underline-offset: 3px; }
     .article-body ul, .article-body ol { margin: 0 0 14px 22px; color: var(--text-soft); }
     .article-body li { margin-bottom: 6px; }
-    .article-body img { max-width: 100%; border-radius: 12px; margin: 14px 0; }
+    .article-body img { max-width: 100%; border-radius: 8px; margin: 14px 0; }
 
-    /* Meta của bài (tag, thời gian) — dùng chung cho archive template */
     .article-meta {
       display: flex; flex-wrap: wrap; align-items: center; gap: 10px;
-      margin: 10px 0 22px;
-      padding-bottom: 18px;
+      margin: 10px 0 22px; padding-bottom: 18px;
       border-bottom: 1px dashed var(--border);
     }
     .tag {
-      display: inline-block;
-      background: var(--primary-soft);
-      color: var(--primary);
-      font-size: 12px; font-weight: 600;
-      padding: 4px 11px; border-radius: 999px;
+      display: inline-block; background: var(--navy); color: #fff;
+      font-size: 12px; font-weight: 600; padding: 4px 11px; border-radius: 4px;
+      letter-spacing: .3px;
     }
-    .crawl-time { font-size: 13px; color: var(--text-faint); }
+    .crawl-time { font-size: 13px; color: var(--text-faint); font-variant-numeric: tabular-nums; }
 
-    /* Bảng tin nội bộ trong bài (nếu có) */
     .article-body table {
-      width: 100%; border-collapse: collapse; margin: 16px 0;
-      font-size: 14px;
-    }
-    .article-body th, .article-body td {
-      border: 1px solid var(--border);
-      padding: 10px 12px; text-align: left;
-    }
-    .article-body th { background: var(--surface-2); font-weight: 600; }
-
-    /* ===================== ARCHIVE LINKS ===================== */
-    #archive-wrap {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      box-shadow: var(--shadow);
-      overflow: hidden;
-      margin-bottom: 50px;
-    }
-    #archive-links { width: 100%; border-collapse: collapse; }
-    #archive-links tr {
-      border-bottom: 1px solid var(--border);
-      transition: background .15s ease;
-    }
-    #archive-links tr:last-child { border-bottom: none; }
-    #archive-links tr:hover { background: var(--surface-2); }
-    #archive-links td { padding: 16px 22px; vertical-align: middle; }
-    #archive-links .idx {
-      width: 44px; color: var(--text-faint); font-size: 13px;
+      width: 100%; border-collapse: collapse; margin: 16px 0; font-size: 14px;
       font-variant-numeric: tabular-nums;
     }
-    #archive-links .day-link {
-      display: flex; align-items: center; gap: 12px;
-      font-weight: 500;
+    .article-body th, .article-body td { border: 1px solid var(--border); padding: 10px 12px; text-align: left; }
+    .article-body th { background: var(--navy); color: #fff; font-weight: 600; }
+    .article-body tbody tr:nth-child(even),
+    .article-body tbody tr:nth-child(even) { background: var(--surface-2); }
+
+    /* ===================== KHO LƯU TRỮ ===================== */
+    #archive-wrap {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: var(--radius); box-shadow: var(--shadow);
+      overflow: hidden; margin-bottom: 50px;
     }
+    #archive-links { width: 100%; border-collapse: collapse; }
+    #archive-links tr { border-bottom: 1px solid var(--border); transition: background .15s ease; }
+    #archive-links tr:last-child { border-bottom: none; }
+    #archive-links tr:hover { background: var(--surface-2); }
+    #archive-links td { padding: 15px 20px; vertical-align: middle; }
+    #archive-links .idx { width: 44px; color: var(--text-faint); font-size: 13px; font-variant-numeric: tabular-nums; }
+    #archive-links .day-link { display: flex; align-items: center; gap: 12px; font-weight: 500; }
     #archive-links .cal {
-      flex: none;
-      width: 38px; height: 38px; border-radius: 10px;
+      flex: none; width: 38px; height: 38px; border-radius: 6px;
       background: var(--primary-soft); color: var(--primary);
       display: grid; place-items: center; font-size: 16px;
     }
-    #archive-links .go {
-      margin-left: auto; color: var(--text-faint);
-      font-size: 13px; white-space: nowrap;
-    }
+    #archive-links .go { margin-left: auto; color: var(--text-faint); font-size: 13px; white-space: nowrap; }
     #archive-links tr:hover .go { color: var(--primary); }
 
-    /* ===================== TRẠNG THÁI TẢI / RỖNG ===================== */
-    .state {
-      text-align: center; color: var(--text-faint);
-      padding: 40px 20px; font-size: 15px;
-    }
+    /* ===================== TRẠNG THÁI ===================== */
+    .state { text-align: center; color: var(--text-faint); padding: 40px 20px; font-size: 15px; }
     .spinner {
       width: 26px; height: 26px; margin: 0 auto 14px;
-      border: 3px solid var(--border);
-      border-top-color: var(--primary);
-      border-radius: 50%;
-      animation: spin .8s linear infinite;
+      border: 3px solid var(--border); border-top-color: var(--primary);
+      border-radius: 50%; animation: spin .8s linear infinite;
     }
     @keyframes spin { to { transform: rotate(360deg); } }
 
     /* ===================== FOOTER ===================== */
     .site-footer {
-      border-top: 1px solid var(--border);
-      background: var(--surface);
-      padding: 30px 0;
-      text-align: center;
-      color: var(--text-faint);
-      font-size: 14px;
+      border-top: 3px solid var(--primary); background: var(--navy);
+      color: #c3ccd8; padding: 28px 0; font-size: 13.5px;
     }
-    .site-footer strong { color: var(--text-soft); }
-    .site-footer .heart { color: var(--primary); }
+    .site-footer .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 12px; align-items: center; }
+    .site-footer strong { color: #fff; }
+    .site-footer .disclaimer { font-size: 12px; color: #8ea0b5; max-width: 620px; line-height: 1.6; }
 
-    /* ===================== RESPONSIVE ===================== */
     @media (max-width: 600px) {
-      .site-header { padding: 30px 0 26px; }
+      .masthead { padding: 18px 0 14px; }
+      .masthead .today { text-align: left; }
       #archive-links td { padding: 14px 16px; }
-      #archive-links .idx { display: none; } /* ẩn số thứ tự trên mobile cho gọn */
-      #archive-links .go span { display: none; } /* chỉ để lại mũi tên */
+      #archive-links .idx { display: none; }
+      #archive-links .go span { display: none; }
     }
   </style>
 </head>
 
 <body>
-  <!-- ===================== HEADER ===================== -->
+  <!-- ===================== THANH CHỈ SỐ (TICKER) ===================== -->
+  <div class="ticker-bar">
+    <div class="tradingview-widget-container">
+      <div class="tradingview-widget-container__widget"></div>
+      <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-ticker-tape.js" async>
+      {
+        "symbols": [
+          { "proName": "TVC:NI225",        "title": "日経225" },
+          { "proName": "TSE:TOPIX",        "title": "TOPIX" },
+          { "proName": "FX_IDC:USDJPY",    "title": "USD/JPY" },
+          { "proName": "TVC:DJI",          "title": "NYダウ" },
+          { "proName": "SP:SPX",           "title": "S&P500" },
+          { "proName": "TVC:GOLD",         "title": "金 (Gold)" },
+          { "proName": "TVC:US10Y",        "title": "米10年債" }
+        ],
+        "showSymbolLogo": true,
+        "colorTheme": "dark",
+        "isTransparent": true,
+        "displayMode": "adaptive",
+        "locale": "ja"
+      }
+      </script>
+    </div>
+  </div>
+
+  <!-- ===================== MASTHEAD ===================== -->
   <header class="site-header">
-    <div class="wrap">
-      <span class="badge"><span class="dot"></span> TỰ ĐỘNG CẬP NHẬT HẰNG NGÀY</span>
-      <h1>Trang Cập Nhật Tin Tức Mỗi Ngày</h1>
-      <p>
-        Hệ thống tự động cào, chọn lọc và tóm tắt tin tức nổi bật mỗi ngày bằng AI,
-        sau đó xuất bản tại đây. Bạn không cần làm gì — chỉ việc đọc.
-      </p>
+    <div class="wrap masthead">
+      <div class="brand">
+        <div class="mark">株</div>
+        <div>
+          <h1>Bản Tin Thị Trường</h1>
+          <div class="sub">Chứng khoán Nhật Bản · 日本株マーケット</div>
+        </div>
+      </div>
+      <div class="today">
+        Phiên giao dịch
+        <b id="today-headline">—</b>
+      </div>
+    </div>
+    <div class="header-strip">
+      <div class="wrap">
+        <span class="live"><span class="dot"></span>CẬP NHẬT HẰNG NGÀY</span>
+        <span>Tổng hợp biến động ngành, dòng tiền và các mã có giá trị giao dịch đột biến trên thị trường Nhật Bản.</span>
+      </div>
     </div>
   </header>
 
   <main class="wrap">
+    <!-- ===================== CHỈ SỐ THỊ TRƯỜNG ===================== -->
+    <div class="section-head">
+      <h2>Chỉ số thị trường</h2>
+      <span class="jp">主要指標</span>
+      <span class="meta">Dữ liệu thời gian thực</span>
+    </div>
+
+    <div id="market-widgets">
+      <!-- 日経225 -->
+      <div class="widget-card">
+        <div class="tradingview-widget-container">
+          <div class="tradingview-widget-container__widget"></div>
+          <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-mini-symbol-overview.js" async>
+          { "symbol": "TVC:NI225", "width": "100%", "height": "100%", "locale": "ja", "dateRange": "1D", "colorTheme": "light", "isTransparent": true, "autosize": true }
+          </script>
+        </div>
+      </div>
+      <!-- TOPIX -->
+      <div class="widget-card">
+        <div class="tradingview-widget-container">
+          <div class="tradingview-widget-container__widget"></div>
+          <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-mini-symbol-overview.js" async>
+          { "symbol": "TSE:TOPIX", "width": "100%", "height": "100%", "locale": "ja", "dateRange": "1D", "colorTheme": "light", "isTransparent": true, "autosize": true }
+          </script>
+        </div>
+      </div>
+      <!-- USD/JPY -->
+      <div class="widget-card">
+        <div class="tradingview-widget-container">
+          <div class="tradingview-widget-container__widget"></div>
+          <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-mini-symbol-overview.js" async>
+          { "symbol": "FX_IDC:USDJPY", "width": "100%", "height": "100%", "locale": "ja", "dateRange": "1D", "colorTheme": "light", "isTransparent": true, "autosize": true }
+          </script>
+        </div>
+      </div>
+      <!-- NYダウ -->
+      <div class="widget-card">
+        <div class="tradingview-widget-container">
+          <div class="tradingview-widget-container__widget"></div>
+          <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-mini-symbol-overview.js" async>
+          { "symbol": "TVC:DJI", "width": "100%", "height": "100%", "locale": "ja", "dateRange": "1D", "colorTheme": "light", "isTransparent": true, "autosize": true }
+          </script>
+        </div>
+      </div>
+    </div>
+
     <!-- ===================== TIN HÔM NAY ===================== -->
-    <div class="section-title">
-      <h2>Tin nổi bật hôm nay</h2>
-      <span class="line"></span>
+    <div class="section-head">
+      <h2>Tiêu điểm phiên hôm nay</h2>
+      <span class="jp">本日のマーケット</span>
       <span class="meta" id="today-date">—</span>
     </div>
 
     <article id="today-news" class="article-body">
-      <div class="state">
-        <div class="spinner"></div>
-        Đang tải bản tin mới nhất…
-      </div>
+      <div class="state"><div class="spinner"></div>Đang tải bản tin mới nhất…</div>
     </article>
 
     <!-- ===================== KHO LƯU TRỮ ===================== -->
-    <div class="section-title">
-      <h2>Các bản tin trước</h2>
-      <span class="line"></span>
+    <div class="section-head">
+      <h2>Lưu trữ bản tin</h2>
+      <span class="jp">バックナンバー</span>
       <span class="meta" id="archive-count">—</span>
     </div>
 
@@ -294,8 +345,14 @@
   <!-- ===================== FOOTER ===================== -->
   <footer class="site-footer">
     <div class="wrap">
-      <p>© <span id="year"></span> — Hệ thống tổng hợp tin tức tự động.</p>
-      <p>Vận hành &amp; phát triển bởi <strong>Phuc Hung</strong> <span class="heart">♥</span>, chạy trên nền tảng Claude Code &amp; GitHub Pages.</p>
+      <div>
+        <p>© <span id="year"></span> <strong>Bản Tin Thị Trường</strong> — Chứng khoán Nhật Bản.</p>
+        <p>Biên tập &amp; vận hành: <strong>Phuc Hung</strong>.</p>
+      </div>
+      <p class="disclaimer">
+        Thông tin trên trang được tổng hợp từ các nguồn công khai, chỉ mang tính tham khảo và
+        không cấu thành khuyến nghị đầu tư. Nhà đầu tư tự chịu trách nhiệm với các quyết định của mình.
+      </p>
     </div>
   </footer>
 
@@ -304,34 +361,28 @@
     (function () {
       "use strict";
 
-      // Cập nhật năm ở footer
       document.getElementById("year").textContent = new Date().getFullYear();
 
-      // Chuyển "2026-07-03" -> "03/07/2026"
       function toDisplayDate(iso) {
         var p = String(iso).split("-");
         if (p.length !== 3) return iso;
         return p[2] + "/" + p[1] + "/" + p[0];
       }
-
-      // Thứ trong tuần bằng tiếng Việt (tùy chọn hiển thị đẹp hơn)
       function weekdayVi(iso) {
         var d = new Date(iso + "T00:00:00");
         if (isNaN(d)) return "";
         return ["Chủ Nhật","Thứ Hai","Thứ Ba","Thứ Tư","Thứ Năm","Thứ Sáu","Thứ Bảy"][d.getDay()];
       }
-
-      // Chống cache để luôn lấy dữ liệu mới nhất mỗi ngày
       function bust(url) {
         return url + (url.indexOf("?") === -1 ? "?" : "&") + "v=" + Date.now();
       }
 
       var todayEl   = document.getElementById("today-news");
       var todayDate = document.getElementById("today-date");
+      var todayHead = document.getElementById("today-headline");
       var archiveEl = document.querySelector("#archive-links tbody");
       var archiveCount = document.getElementById("archive-count");
 
-      // 1) Đọc cơ sở dữ liệu trung gian
       fetch(bust("database.json"))
         .then(function (res) {
           if (!res.ok) throw new Error("Không đọc được database.json (HTTP " + res.status + ")");
@@ -339,17 +390,14 @@
         })
         .then(function (data) {
           var list = (data && Array.isArray(data.news_list)) ? data.news_list.slice() : [];
-
           if (list.length === 0) {
-            todayEl.innerHTML = '<div class="state">Chưa có bản tin nào. Hệ thống sẽ tự cập nhật sớm.</div>';
+            todayEl.innerHTML = '<div class="state">Chưa có bản tin nào.</div>';
             archiveEl.innerHTML = '<tr><td class="state">Chưa có dữ liệu lưu trữ.</td></tr>';
             return;
           }
-
-          // Phần tử đầu tiên = ngày mới nhất
           var latest = list[0];
           renderToday(latest);
-          renderArchive(list.slice(1)); // các ngày còn lại
+          renderArchive(list.slice(1));
         })
         .catch(function (err) {
           console.error(err);
@@ -357,35 +405,30 @@
           archiveEl.innerHTML = '<tr><td class="state">Không tải được danh sách lưu trữ.</td></tr>';
         });
 
-      // 2) Nạp ngầm nội dung bài mới nhất vào vùng "Tin hôm nay"
       function renderToday(iso) {
         var wd = weekdayVi(iso);
         todayDate.textContent = (wd ? wd + ", " : "") + toDisplayDate(iso);
+        if (todayHead) todayHead.textContent = (wd ? wd + " · " : "") + toDisplayDate(iso);
 
         fetch(bust("archive/" + iso + ".html"))
           .then(function (res) {
             if (!res.ok) throw new Error("Thiếu file archive/" + iso + ".html");
             return res.text();
           })
-          .then(function (html) {
-            todayEl.innerHTML = html;
-          })
+          .then(function (html) { todayEl.innerHTML = html; })
           .catch(function (err) {
             console.error(err);
             todayEl.innerHTML = '<div class="state">Không tải được nội dung bản tin hôm nay.<br><small>' + err.message + '</small></div>';
           });
       }
 
-      // 3) Render danh sách các ngày cũ thành các dòng link
       function renderArchive(days) {
         if (!days.length) {
           archiveEl.innerHTML = '<tr><td class="state">Chưa có bản tin cũ nào khác.</td></tr>';
           archiveCount.textContent = "0 bản tin";
           return;
         }
-
         archiveCount.textContent = days.length + " bản tin";
-
         var rows = days.map(function (iso, i) {
           var wd = weekdayVi(iso);
           return (
@@ -393,17 +436,16 @@
               '<td class="idx">' + (i + 1) + '</td>' +
               '<td>' +
                 '<a class="day-link" href="archive/' + iso + '.html">' +
-                  '<span class="cal">🗓️</span>' +
+                  '<span class="cal">📈</span>' +
                   '<span>Bản tin ngày ' + toDisplayDate(iso) +
                     (wd ? ' <span style="color:var(--text-faint);font-weight:400">· ' + wd + '</span>' : '') +
                   '</span>' +
-                  '<span class="go"><span>Đọc </span>→</span>' +
+                  '<span class="go"><span>Xem </span>→</span>' +
                 '</a>' +
               '</td>' +
             '</tr>'
           );
         }).join("");
-
         archiveEl.innerHTML = rows;
       }
     })();
