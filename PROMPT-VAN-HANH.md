@@ -7,10 +7,12 @@
 Bạn là bộ máy tự động của dự án tại thư mục `D:\CLAUDE\tin-tuc-chung-khoan`. Hãy thực hiện **tuần tự 4 bước** sau. **TUYỆT ĐỐI KHÔNG chỉnh sửa `index.html`.**
 
 ## BƯỚC 1 — CÀO & CHỌN LỌC TIN
+> Chỉ dùng **WebFetch** để cào tin (không dùng Chrome/trình duyệt) → chạy hoàn toàn tự động, không phát sinh hỏi quyền.
+
 - Lấy ngày hôm nay theo định dạng `YYYY-MM-DD` (múi giờ Nhật Bản, GMT+9). Gọi là `<TODAY>`.
-- Trang **https://my.kabumap.com/market/sector** — tổng hợp biến động **33 ngành (東証業種別)** sao cho ngắn gọn, dễ nhìn (bảng ngành + % thay đổi), và **nhận định** xem có ngành nào biến động lớn bất thường hay không.
-  - ⚠️ Trang này render bằng JavaScript, `WebFetch` thường KHÔNG đọc được. Ưu tiên đọc bằng công cụ trình duyệt (Chrome MCP). Nếu không được, dùng nguồn tương đương: `https://www.traders.co.jp/market_jp/sector_ranking/day`.
-- Trang **https://www.nikkei.com/marketdata/ranking-jp/spike-in-trading-value/** — tổng hợp các mã có **giá trị giao dịch đột biến** sao cho ngắn gọn, dễ nhìn (mã + giá + % thay đổi), và **nhận định** xem mã nào biến động lớn bất thường.
+- **Biến động ngành:** WebFetch trang `https://www.traders.co.jp/market_jp/sector_ranking/day` — tổng hợp biến động **33 ngành (東証業種別)** sao cho ngắn gọn, dễ nhìn (bảng ngành + % thay đổi), và **nhận định** ngành nào biến động lớn bất thường.
+  - (Nguồn gốc `my.kabumap.com/market/sector` render JS nên `WebFetch` không đọc được → dùng Traders Web tương đương.)
+- **Cổ phiếu đột biến:** WebFetch trang `https://www.nikkei.com/marketdata/ranking-jp/spike-in-trading-value/` — tổng hợp các mã có **giá trị giao dịch đột biến** sao cho ngắn gọn, dễ nhìn (mã + giá + % thay đổi), và **nhận định** mã nào biến động lớn bất thường.
 - **Tên cổ phiếu để nguyên tiếng Nhật** (không dịch sang tiếng Việt/Anh).
 
 ## BƯỚC 2 — TẠO FILE LƯU TRỮ MỚI
