@@ -454,8 +454,11 @@
             return;
           }
           var latest = list[0];
-          renderToday(latest);
-          renderArchive(list.slice(1));
+          // Cho phép xem bản tin cũ ngay trong trang qua ?date=YYYY-MM-DD
+          var req = new URLSearchParams(location.search).get("date");
+          var showDate = (req && list.indexOf(req) !== -1) ? req : latest;
+          renderToday(showDate, showDate !== latest);
+          renderArchive(list.filter(function (d) { return d !== showDate; }));
         })
         .catch(function (err) {
           console.error(err);
@@ -463,17 +466,34 @@
           archiveEl.innerHTML = '<tr><td class="state">Không tải được danh sách lưu trữ.</td></tr>';
         });
 
-      function renderToday(iso) {
+      function renderToday(iso, isArchived) {
         var wd = weekdayVi(iso);
         todayDate.textContent = (wd ? wd + ", " : "") + toDisplayDate(iso);
         if (todayHead) todayHead.textContent = (wd ? wd + " · " : "") + toDisplayDate(iso);
+
+        // Đổi tiêu đề mục theo ngữ cảnh: bản tin mới nhất vs bản tin đã lưu
+        var head = todayDate.closest(".section-head");
+        if (head) {
+          var h2 = head.querySelector("h2");
+          var jp = head.querySelector(".jp");
+          if (isArchived) {
+            if (h2) h2.textContent = "Bản tin đã lưu";
+            if (jp) jp.innerHTML = '<a href="./" style="color:var(--primary);font-weight:600;text-decoration:none">← Xem bản tin mới nhất</a>';
+          } else {
+            if (h2) h2.textContent = "Tiêu điểm phiên hôm nay";
+            if (jp) jp.textContent = "本日のマーケット";
+          }
+        }
 
         fetch(bust("archive/" + iso + ".html"))
           .then(function (res) {
             if (!res.ok) throw new Error("Thiếu file archive/" + iso + ".html");
             return res.text();
           })
-          .then(function (html) { todayEl.innerHTML = html; })
+          .then(function (html) {
+            todayEl.innerHTML = html;
+            if (isArchived && head) head.scrollIntoView({ behavior: "smooth", block: "start" });
+          })
           .catch(function (err) {
             console.error(err);
             todayEl.innerHTML = '<div class="state">Không tải được nội dung bản tin hôm nay.<br><small>' + err.message + '</small></div>';
@@ -490,10 +510,10 @@
         var rows = days.map(function (iso, i) {
           var wd = weekdayVi(iso);
           return (
-            '<tr onclick="location.href=\'archive/' + iso + '.html\'" style="cursor:pointer">' +
+            '<tr onclick="location.href=\'?date=' + iso + '\'" style="cursor:pointer">' +
               '<td class="idx">' + (i + 1) + '</td>' +
               '<td>' +
-                '<a class="day-link" href="archive/' + iso + '.html">' +
+                '<a class="day-link" href="?date=' + iso + '">' +
                   '<span class="cal">📈</span>' +
                   '<span>Bản tin ngày ' + toDisplayDate(iso) +
                     (wd ? ' <span style="color:var(--text-faint);font-weight:400">· ' + wd + '</span>' : '') +
